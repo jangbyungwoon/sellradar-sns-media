@@ -17,6 +17,10 @@ const SECRET_TOKEN = 'CHANGE_ME_TO_RANDOM_STRING';
 // true 로 바꾸면 주문과 무관한 알림도 "기타알림" 시트에 저장합니다.
 const KEEP_NON_ORDER = false;
 
+// script.google.com 에서 따로 만든 경우(방법 2): 시트 URL의 /d/ 와 /edit 사이 ID를 넣으세요.
+// 시트의 "확장 프로그램 → Apps Script"로 만든 경우(방법 1): 비워 두면 됩니다.
+const SPREADSHEET_ID = '';
+
 const TIMEZONE = 'Asia/Seoul';
 const ORDER_SHEET = '주문알림';
 const OTHER_SHEET = '기타알림';
@@ -137,7 +141,7 @@ function parseNotification(app, title, text) {
 
 // ===== 시트 =====
 function getSheet_(name) {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = ss_();
   let sh = ss.getSheetByName(name);
   if (!sh) {
     sh = ss.insertSheet(name);
@@ -151,7 +155,7 @@ function getSheet_(name) {
 }
 
 function ensureSummary_() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = ss_();
   if (ss.getSheetByName(SUMMARY_SHEET)) return;
   const sh = ss.insertSheet(SUMMARY_SHEET);
   sh.getRange('A1').setValue('신규주문 일별 · 쇼핑몰별 합계 (자동 계산)').setFontWeight('bold');
@@ -184,6 +188,10 @@ function testInsert() {
 }
 
 // ===== 유틸 =====
+function ss_() {
+  return SPREADSHEET_ID ? SpreadsheetApp.openById(SPREADSHEET_ID) : SpreadsheetApp.getActiveSpreadsheet();
+}
+
 function readParams_(e) {
   const p = Object.assign({}, (e && e.parameter) || {});
   if (e && e.postData && e.postData.contents && /json/.test(e.postData.type || '')) {
