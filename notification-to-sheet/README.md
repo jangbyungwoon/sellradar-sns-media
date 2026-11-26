@@ -25,6 +25,16 @@
    - 액세스 권한: **모든 사용자**
    - 배포하면 나오는 **웹 앱 URL**(`https://script.google.com/macros/s/.../exec`)을 복사해 둡니다.
 
+### 1단계-B: PC가 없을 때 (폰에서 script.google.com 사용)
+
+모바일 구글 시트 앱에는 "확장 프로그램" 메뉴가 없습니다. 이때는 스크립트를 따로 만들어 시트 ID로 연결합니다.
+
+1. 구글 시트를 만들고 URL에서 ID를 복사합니다: `https://docs.google.com/spreadsheets/d/`**`여기가_ID`**`/edit`
+2. 폰 크롬에서 `script.google.com`을 열고, 메뉴(⋮)에서 **데스크톱 사이트**를 체크합니다.
+3. **새 프로젝트**를 만들고 `Code.gs` 내용을 전부 붙여넣습니다.
+4. `SPREADSHEET_ID = ''`의 따옴표 안에 1번에서 복사한 ID를 넣고, `SECRET_TOKEN`도 바꿉니다.
+5. 이후는 위의 5~7번(`setup` → `testInsert` → 웹 앱 배포)과 같습니다.
+
 > 나중에 코드를 고치면 **배포 관리 → 수정 → 버전: 새 버전**으로 다시 배포해야 반영됩니다 (URL은 그대로 유지됩니다).
 
 ## 2단계: 폰에 MacroDroid 설정 (5분)
